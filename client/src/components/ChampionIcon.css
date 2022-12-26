@@ -1,0 +1,15 @@
+.champion-icon {
+  width: 70px;
+  box-sizing: border-box;
+}
+.champion-icon img {
+  width: 100%;
+}
+.champion-icon.disabled {
+  pointer-events: none;
+  filter: brightness(30%);
+}
+.champion-icon .champion-name {
+  margin: 0 0;
+  text-align: center;
+}

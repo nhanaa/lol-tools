@@ -1,0 +1,19 @@
+.ban-item {
+  background-color: #080828;
+  /* aspect-ratio: 1 / 1; */
+  width: 70px;
+  height: 70px;
+}
+.ban-item.selected {
+  border: 5px solid #fff;
+  box-sizing: border-box;
+}
+.ban-item img {
+  width: 100%;
+  height: 100%;
+}
+.ban-item .ban-order {
+  width: 100%;
+  text-align: center;
+  padding: 5px;
+}

@@ -1,0 +1,24 @@
+.pick-icon {
+  background-color: #080828;
+  width: 80px;
+  height: 80px;
+}
+.pick .pick-icon img {
+  width: 80px;
+  height: 80px;
+}
+.pick {
+  height: 18%;
+  width: 120px;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 5px 5px;
+  margin: 5px 0px;
+}
+.pick-order {
+  font-size: 1.5em;
+  font-weight: 600;
+  text-align: center;
+  margin: auto auto;
+  padding: 5px 5px;
+}

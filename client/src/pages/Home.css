@@ -1,0 +1,163 @@
+@import url("https://fonts.googleapis.com/css2?family=GFS+Didot&family=Merriweather+Sans:wght@400;600&display=swap");
+
+/* General styling for home page */
+.home {
+  color: #fff;
+  padding: 10px 20px;
+}
+
+/* Styling for header of ban pick */
+.ban-pick-header {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Merriweather Sans", sans-serif;
+}
+
+/* Blue team */
+.ban-pick-header .blue-team {
+  width: 30%;
+}
+.ban-pick-header .blue-team h3 {
+  background-color: blue;
+  padding: 10px;
+  font-weight: 600;
+}
+.ban-pick-header .blue-team .ban {
+  display: flex;
+  float: left;
+}
+.ban-pick-header .blue-team .ban1-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 15px;
+  width: 60%;
+  padding-right: 50px;
+}
+.ban-pick-header .blue-team .ban4-5 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 15px;
+  width: 40%;
+}
+.ban-pick-header .blue-team .ban-item.selected {
+  background-color: blue;
+}
+
+/* Red team */
+.ban-pick-header .red-team {
+  width: 30%;
+}
+.ban-pick-header .red-team h3 {
+  background-color: red;
+  text-align: right;
+  padding: 10px;
+  font-weight: 600;
+}
+.ban-pick-header .red-team .ban {
+  display: flex;
+  float: right;
+}
+.ban-pick-header .red-team .ban1-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 15px;
+  width: 60%;
+}
+.ban-pick-header .red-team .ban4-5 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 15px;
+  width: 40%;
+  padding-right: 50px;
+}
+.ban-pick-header .red-team .ban-item.selected {
+  background-color: red;
+}
+
+/* Styling for body of ban pick */
+.ban-pick-body {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+}
+
+/* Blue picks */
+.ban-pick-body .blue-picks {
+  display: flex;
+  width: 10%;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 500px;
+  padding: 10px 20px;
+  padding-left: 0px;
+}
+.ban-pick-body .blue-picks .pick {
+  padding-right: 10px;
+}
+.ban-pick-body .blue-picks .pick-order {
+  color: blue;
+}
+.ban-pick-body .blue-picks .selected {
+  background-color: blue;
+}
+.ban-pick-body .blue-picks .selected .pick-order {
+  color: #fff;
+}
+
+/* Champions grid */
+.ban-pick-body .champions {
+  border: 5px solid black;
+  width: 50%;
+  margin: auto auto;
+  height: 500px;
+  padding: 10px 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-family: "GFS Didot", serif;
+}
+.ban-pick-body .champions::-webkit-scrollbar {
+  background: none;
+  width: 10px;
+}
+.ban-pick-body .champions::-webkit-scrollbar-thumb {
+  background-color: #01010b;
+  border-radius: 10px;
+}
+.ban-pick-body .champions::-webkit-scrollbar-corner {
+  background: none;
+}
+.ban-pick-body .champion-icon-grid {
+  margin: auto auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  column-gap: 40px;
+  row-gap: 40px;
+}
+.ban-pick-body .champion-icon-grid .selected img {
+  box-sizing: border-box;
+  border: 2px solid #fff;
+}
+
+/* Red picks */
+.ban-pick-body .red-picks {
+  display: flex;
+  width: 10%;
+  text-align: right;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 500px;
+  padding: 10px 20px;
+  padding-right: 0px;
+}
+.ban-pick-body .red-picks .pick {
+  padding-left: 10px;
+}
+.ban-pick-body .red-picks .pick-order {
+  color: red;
+}
+.ban-pick-body .red-picks .selected {
+  background-color: red;
+}
+.ban-pick-body .red-picks .selected .pick-order {
+  color: #fff;
+}
