@@ -7,7 +7,6 @@ import SearchBar from '../components/SearchBar';
 import './Home.css';
 
 const Home = () => {
-
   const [championObjects, setChampionObjects] = useState([]);
   const [selectedBanPick, setSelectedBanPick] = useState("");
   const [selectedBanPick2, setSelectedBanPick2] = useState("");
@@ -19,24 +18,32 @@ const Home = () => {
   const [searchKey, setSearchKey] = useState("");
 
   const fetchChampions = async () => {
-    const response  = await fetch("/api/champions");
+    const data = localStorage.getItem("championObjects");
 
-    const json = await response.json();
+    if (!data) { // Check if there is cached data
+      const response  = await fetch("/api/champions");
 
-    if (!response.ok) {
-      console.log("error");
-      return;
-    }
+      const json = await response.json();
 
-    setChampionObjects(Object.entries(json.data));
-
-    // Add a boolean value to denote if the champ is disabled or not
-    setChampionObjects(prevChampionObjects => {
-      for (let i = 0; i < prevChampionObjects.length; ++i) {
-        prevChampionObjects[i].push(false);
+      if (!response.ok) {
+        console.log("error");
+        return;
       }
-      return prevChampionObjects;
-    })
+
+      const newData = Object.entries(json.data);
+      for (let i = 0; i < newData.length; ++i) {
+        newData[i].push(false);
+      }
+
+      // Cache data in localStorage
+      localStorage.setItem(newData, "championObjects");
+
+      // Add a boolean value to denote if the champ is disabled or not
+      setChampionObjects(newData);
+    }
+    else {
+      setChampionObjects(data);
+    }
   }
 
   // Fetch the champion icons for selection for
@@ -61,7 +68,7 @@ const Home = () => {
     setSelectedChamp(champ);
   }
 
-  // Reset the selected champ and selected ban pick state
+  // Reset the selected champ and selected ban pick states
   const reset = () => {
     setSelectedBanPick("");
     setSelectedBanPick2("");

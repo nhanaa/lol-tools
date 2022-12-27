@@ -9,16 +9,13 @@ const Navbar = () => {
         <span className="title-name">Lol Tools</span>
       </Link>
       <div className="panel">
-        {/* <Link to="/">Home</Link>
-        <Link to="/options">Options</Link>
-        <Link to="/about">About</Link> */}
-        <a href="">asdasd</a>
-        <a href="">asdsad</a>
+        <Link className="panel-item" to="/">Home</Link>
+        <Link className="panel-item" to="/options">Options</Link>
+        <Link className="panel-item" to="/about">About</Link>
       </div>
-      <div>
-        <div className="account">
-
-        </div>
+      <div className="account">
+        <Link className="account-item" to="/login">Login</Link>
+        <Link className="account-item" to="/signup">Signup</Link>
       </div>
     </div>
   );

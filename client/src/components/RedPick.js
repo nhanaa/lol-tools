@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import './Pick.css';
 
 const RedPick = ({champ, selectedBanPick, handleSelection, order}) => {
   const handleClick = () => {

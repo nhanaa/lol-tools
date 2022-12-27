@@ -2,12 +2,14 @@
 .navbar {
   display: flex;
   justify-content: space-between;
-  background-color: slateblue;
+  background-color: #083b99;
   height: 40px;
   color: #fff;
   padding: 5px;
 }
 .navbar .title {
+  display: flex;
+  justify-content: center;
   height: 40px;
   float: right;
   text-decoration: none;
@@ -27,4 +29,45 @@
 .navbar .title .logo {
   display: inline;
   height: 40px;
+}
+
+/* Panel section*/
+.navbar .panel {
+  display: flex;
+  justify-content: space-evenly;
+  width: 20%;
+}
+
+.navbar .panel-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.2em;
+  border-radius: 4px;
+  padding: 0 10px;
+}
+
+.navbar .panel-item:hover {
+  background-color: #062e78;
+}
+
+/* Account section*/
+.navbar .account {
+  display: flex;
+  justify-content: space-evenly;
+  width: 20%;
+}
+.navbar .account-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.2em;
+  border: 2px solid #000;
+  border-radius: 4px;
+  padding: 0 10px;
 }
