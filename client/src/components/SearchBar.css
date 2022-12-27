@@ -8,6 +8,7 @@
   border-bottom: 2px solid black;
   color: #fff;
   font-size: 1.2em;
+  font-family: "GFS Didot", serif;
 }
 
 .search-input:focus {

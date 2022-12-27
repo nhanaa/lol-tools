@@ -30,6 +30,7 @@ const Home = () => {
         return;
       }
 
+      // Add a boolean value to denote if the champ is disabled or not
       const newData = Object.entries(json.data);
       for (let i = 0; i < newData.length; ++i) {
         newData[i].push(false);
@@ -38,7 +39,6 @@ const Home = () => {
       // Cache data in localStorage
       localStorage.setItem(newData, "championObjects");
 
-      // Add a boolean value to denote if the champ is disabled or not
       setChampionObjects(newData);
     }
     else {
@@ -126,16 +126,13 @@ const Home = () => {
       const temp2 = banPick2[order2];
       setBanPick1(prevBanPick1 => {
         prevBanPick1[order1] = temp2;
-        console.log(prevBanPick1[order1]); //test
         return {...prevBanPick1};
       });
       setBanPick2(prevBanPick2 => {
         prevBanPick2[order2] = temp1;
-        console.log(prevBanPick2[order2]) //test
         return {...prevBanPick2};
       })
     }
-
     // Check for each case of selectedBanPick2
     const swapCase = (banPick1, setBanPick1) => {
       switch (selectedBanPick2[0]) {
@@ -155,7 +152,6 @@ const Home = () => {
           break;
       }
     }
-
     if (selectedBanPick && selectedBanPick2) {
       switch (selectedBanPick[0]) {
         case "B":
