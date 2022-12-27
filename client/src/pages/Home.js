@@ -12,10 +12,12 @@ import SearchBar from '../components/SearchBar';
 
 const Home = () => {
   const [championObjects, setChampionObjects] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
+
+  // ? Can these be refactored into a reducer?
   const [selectedBanPick, setSelectedBanPick] = useState("");
   const [selectedBanPick2, setSelectedBanPick2] = useState("");
   const [selectedChamp, setSelectedChamp] = useState(null);
-  const [searchKey, setSearchKey] = useState("");
 
   // TODO: refactor the following states into a reducer
   const [bluePicks, setBluePicks] = useState({"B1": null, "B2": null, "B3": null, "B4": null, "B5": null});
@@ -24,7 +26,8 @@ const Home = () => {
   const [redBans, setRedBans] = useState({"r1": null, "r2": null, "r3": null, "r4": null, "r5": null});
 
   const fetchChampions = async () => {
-    const data = localStorage.getItem("championObjects");
+    const data = JSON.parse(localStorage.getItem("championObjects"));
+    console.log(data);
 
     if (!data) { // Check if there is cached data
       const response  = await fetch("/api/champions");
@@ -43,7 +46,7 @@ const Home = () => {
       }
 
       // Cache data in localStorage
-      localStorage.setItem(newData, "championObjects");
+      localStorage.setItem("championObjects", JSON.stringify(newData));
 
       setChampionObjects(newData);
     }
@@ -179,10 +182,21 @@ const Home = () => {
   }, [selectedBanPick, selectedBanPick2])
 
   // Save the draft to the database
-  const saveDraft = () => {
-    const draft = {blueBans, redBans, bluePicks, redPicks};
-    // TODO: make a post request to the server to save the draft
-    console.log(draft);
+  const saveDraft = async () => {
+    const response = await fetch("/draft/create", {
+      method: "POST",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify({blueBans, redBans, bluePicks, redPicks})
+    })
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      console.log("Error getting response");
+    }
+    if (response.ok) {
+      console.log("New draft added", json);
+    }
   }
 
   // Handle action when clicking on save button
