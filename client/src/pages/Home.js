@@ -1,21 +1,27 @@
 import { useEffect, useState } from 'react';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import './Home.css';
+
+// import components
 import Ban from '../components/Ban';
 import BluePick from '../components/BluePick';
 import ChampionIcon from '../components/ChampionIcon';
 import RedPick from '../components/RedPick';
 import SearchBar from '../components/SearchBar';
-import './Home.css';
 
 const Home = () => {
   const [championObjects, setChampionObjects] = useState([]);
   const [selectedBanPick, setSelectedBanPick] = useState("");
   const [selectedBanPick2, setSelectedBanPick2] = useState("");
   const [selectedChamp, setSelectedChamp] = useState(null);
+  const [searchKey, setSearchKey] = useState("");
+
+  // TODO: refactor the following states into a reducer
   const [bluePicks, setBluePicks] = useState({"B1": null, "B2": null, "B3": null, "B4": null, "B5": null});
   const [redPicks, setRedPicks] = useState({"R1": null, "R2": null, "R3": null, "R4": null, "R5": null});
   const [blueBans, setBlueBans] = useState({"b1": null, "b2": null, "b3": null, "b4": null, "b5": null});
   const [redBans, setRedBans] = useState({"r1": null, "r2": null, "r3": null, "r4": null, "r5": null});
-  const [searchKey, setSearchKey] = useState("");
 
   const fetchChampions = async () => {
     const data = localStorage.getItem("championObjects");
@@ -95,7 +101,6 @@ const Home = () => {
         return {...prevState};
       });
     }
-
     if (selectedChamp && selectedBanPick) {
       switch (selectedBanPick[0]) {
         case "B":
@@ -173,6 +178,36 @@ const Home = () => {
     }
   }, [selectedBanPick, selectedBanPick2])
 
+  // Save the draft to the database
+  const saveDraft = () => {
+    const draft = {blueBans, redBans, bluePicks, redPicks};
+    // TODO: make a post request to the server to save the draft
+    console.log(draft);
+  }
+
+  // Handle action when clicking on save button
+  const handleSave = () => {
+    confirmAlert({
+      title: "Confirm to save draft",
+      message: "Are you sure to save this draft?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => saveDraft()
+        },
+        {
+          label: "No",
+          onClick: () => null
+        }
+      ]
+    });
+  }
+
+  const handleLoad = () => {
+    // TODO: make a GET request to the server to get the draft
+  }
+
+
   return (
     <div className="home">
 
@@ -190,6 +225,10 @@ const Home = () => {
               <Ban champ={blueBans["b5"]} selectedBanPick={selectedBanPick} handleSelection={handleBanPickSelection} order={"b5"} />
             </div>
           </div>
+        </div>
+        <div className="save-load-draft">
+          <button className="save-draft" onClick={handleSave}>Save draft</button>
+          <button className="load-draft" onClick={handleLoad}>Load draft</button>
         </div>
         <div className="red-team">
           <h3>Red team</h3>
