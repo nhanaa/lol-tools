@@ -56,10 +56,8 @@ const Home = () => {
   const handleBanPickSelection = (order) => {
     if (selectedBanPick !== "") {
       setSelectedBanPick2(order);
-      console.log("bp2", order);
       return;
     }
-    console.log("bp1", order);
     setSelectedBanPick(order);
   }
 
@@ -124,7 +122,6 @@ const Home = () => {
   useEffect(() => {
     // Swap champs between two order of ban/pick
     const swapChamp = (banPick1, setBanPick1, order1, banPick2, setBanPick2, order2) => {
-      console.log(banPick1[order1], banPick2[order2]);
       const temp1 = banPick1[order1];
       const temp2 = banPick2[order2];
       setBanPick1(prevBanPick1 => {

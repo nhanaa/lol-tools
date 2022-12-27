@@ -5,7 +5,7 @@
   height: 70px;
 }
 .ban-item.selected {
-  border: 5px solid #fff;
+  border: 2px solid #fff;
   box-sizing: border-box;
 }
 .ban-item img {
