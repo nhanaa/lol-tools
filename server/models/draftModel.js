@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const draftSchema = new Schema({
+  "draftName": "String",
+  "blueName": "String",
+  "redName": "String",
   "blueBans": {
     "b1": {
       "type": [

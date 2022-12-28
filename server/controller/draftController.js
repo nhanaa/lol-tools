@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 // Save a draft to the database
 const createNewDraft = async (req, res) => {
   const {
+          draftName,
+          blueName,
+          redName,
           blueBans: {b1, b2, b3, b4, b5},
           redBans: {r1,r2, r3, r4, r5},
           bluePicks: {B1, B2, B3, B4, B5},
@@ -14,6 +17,9 @@ const createNewDraft = async (req, res) => {
   try {
     const draft = await Draft.create(
     {
+      draftName,
+      blueName,
+      redName,
       blueBans: {b1, b2, b3, b4, b5},
       redBans: {r1,r2, r3, r4, r5},
       bluePicks: {B1, B2, B3, B4, B5},

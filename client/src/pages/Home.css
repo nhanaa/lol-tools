@@ -17,10 +17,25 @@
 .ban-pick-header .blue-team {
   width: 30%;
 }
-.ban-pick-header .blue-team h3 {
+.ban-pick-header .blue-team .name {
+  width: 100%;
+  margin: 20px 0;
   background-color: blue;
-  padding: 10px;
+}
+.ban-pick-header .blue-team .name-value {
+  position: relative;
+  left: 10px;
+  padding: 10px 0;
+  background: none;
   font-weight: 600;
+  font-size: 1.2em;
+  font-family: inherit;
+  color: #fff;
+  width: 100%;
+  border: none;
+}
+.ban-pick-header .blue-team .name-value:focus {
+  outline: 10px;
 }
 .ban-pick-header .blue-team .ban {
   display: flex;
@@ -43,15 +58,32 @@
   background-color: blue;
 }
 
+/* Draft actions */
+
 /* Red team */
 .ban-pick-header .red-team {
   width: 30%;
 }
-.ban-pick-header .red-team h3 {
+.ban-pick-header .red-team .name {
+  width: 100%;
+  margin: 20px 0;
   background-color: red;
-  text-align: right;
-  padding: 10px;
+}
+.ban-pick-header .red-team .name-value {
+  position: relative;
+  right: 10px;
+  background: none;
+  padding: 10px 0;
   font-weight: 600;
+  font-size: 1.2em;
+  font-family: inherit;
+  color: #fff;
+  width: 100%;
+  border: none;
+  text-align: right;
+}
+.ban-pick-header .red-team .name-value:focus {
+  outline: none;
 }
 .ban-pick-header .red-team .ban {
   display: flex;

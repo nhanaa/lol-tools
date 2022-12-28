@@ -13,6 +13,9 @@ import SearchBar from '../components/SearchBar';
 const Home = () => {
   const [championObjects, setChampionObjects] = useState([]);
   const [searchKey, setSearchKey] = useState("");
+  const [blueName, setBlueName] = useState("Blue team");
+  const [redName, setRedName] = useState("Red team");
+  const [draftName, setDraftName] = useState("New Draft")
 
   // ? Can these be refactored into a reducer?
   const [selectedBanPick, setSelectedBanPick] = useState("");
@@ -27,7 +30,6 @@ const Home = () => {
 
   const fetchChampions = async () => {
     const data = JSON.parse(localStorage.getItem("championObjects"));
-    console.log(data);
 
     if (!data) { // Check if there is cached data
       const response  = await fetch("/api/champions");
@@ -179,14 +181,14 @@ const Home = () => {
       }
       reset();
     }
-  }, [selectedBanPick, selectedBanPick2])
+  }, [selectedBanPick, selectedBanPick2]);
 
   // Save the draft to the database
   const saveDraft = async () => {
     const response = await fetch("/draft/create", {
       method: "POST",
       headers: {"Content-type": "application/json"},
-      body: JSON.stringify({blueBans, redBans, bluePicks, redPicks})
+      body: JSON.stringify({draftName, blueName, redName, blueBans, redBans, bluePicks, redPicks})
     })
 
     const json = await response.json();
@@ -221,13 +223,27 @@ const Home = () => {
     // TODO: make a GET request to the server to get the draft
   }
 
+  const handleBlueNameChange = (e) => {
+    e.preventDefault();
+    setBlueName(e.target.value);
+  }
+  const handleRedNameChange = (e) => {
+    e.preventDefault();
+    setRedName(e.target.value);
+  }
+  const handleDraftNameChange = (e) => {
+    e.preventDefault();
+    setDraftName(e.target.value);
+  }
 
   return (
     <div className="home">
 
       <div className="ban-pick-header">
         <div className="blue-team">
-          <h3>Blue team</h3>
+          <form className="name">
+            <input className="name-value" onChange={handleBlueNameChange} value={blueName}></input>
+          </form>
           <div className="ban">
             <div className="ban1-3">
               <Ban champ={blueBans["b1"]} selectedBanPick={selectedBanPick} handleSelection={handleBanPickSelection} order={"b1"} />
@@ -241,11 +257,16 @@ const Home = () => {
           </div>
         </div>
         <div className="save-load-draft">
+          <form className="name">
+            <input className="name-value" onChange={handleDraftNameChange} value={draftName}></input>
+          </form>
           <button className="save-draft" onClick={handleSave}>Save draft</button>
           <button className="load-draft" onClick={handleLoad}>Load draft</button>
         </div>
         <div className="red-team">
-          <h3>Red team</h3>
+          <form className="name">
+            <input className="name-value" onChange={handleRedNameChange} value={redName}></input>
+          </form>
           <div className="ban">
             <div className="ban4-5">
               <Ban champ={redBans["r5"]} selectedBanPick={selectedBanPick} handleSelection={handleBanPickSelection} order={"r5"} />
