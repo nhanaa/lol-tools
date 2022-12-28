@@ -56,6 +56,9 @@ export const useBanPick = (revertDisabled) => {
         stateCopy[group2][banPick2] = temp;
         return stateCopy;
       }
+      case "load": {
+        return action.payload;
+      }
       default:
         return state;
     }

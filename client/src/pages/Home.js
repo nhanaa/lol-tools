@@ -1,4 +1,4 @@
-import { useEffect, useState, useReducer } from 'react';
+import { useEffect, useState } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import './Home.css';
@@ -10,6 +10,7 @@ import BluePick from '../components/BluePick';
 import ChampionIcon from '../components/ChampionIcon';
 import RedPick from '../components/RedPick';
 import SearchBar from '../components/SearchBar';
+import SavedDrafts from '../components/SavedDrafts';
 
 const Home = () => {
   const [championObjects, setChampionObjects] = useState([]);
@@ -146,8 +147,46 @@ const Home = () => {
     });
   }
 
-  const handleLoad = () => {
-    // TODO: make a GET request to the server to get the draft
+
+  const handleClickLoad = (draft) => {
+    console.log("Loading the draft");
+    // TODO: load the draft data of this component into the draft
+    setDraftName(draft["draftName"]);
+    setBlueName(draft["blueName"]);
+    setRedName(draft["redName"]);
+    const {blueBans, redBans, bluePicks, redPicks} = draft;
+    dispatch({
+      type: "load",
+      payload: {blueBans, redBans, bluePicks, redPicks}
+    });
+  }
+
+  const fetchDrafts = async () => {
+    const response =  await fetch("/draft/fetch");
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      console.log("Error");
+    }
+
+    return json;
+  }
+
+  const handleLoad = async () => {
+    const drafts = await fetchDrafts();
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='custom-ui'>
+            <h1>Choose the draft you want to load.</h1>
+            {drafts.map((draft, index) => (
+              <SavedDrafts onClose={onClose} handleClickLoad={handleClickLoad} draft={draft}/>
+            ))}
+          </div>
+        )
+      }
+    })
   }
 
   const handleBlueNameChange = (e) => {
