@@ -32,6 +32,17 @@ const createNewDraft = async (req, res) => {
   }
 }
 
+const fetchDrafts = async (req, res) => {
+  try {
+    const drafts = await Draft.find({}).sort({createdAt: -1});
+    res.status(200).json(drafts);
+  }
+  catch (err) {
+    res.status(400).json({error: err.message});
+  }
+}
+
 module.exports = {
-  createNewDraft
+  createNewDraft,
+  fetchDrafts
 }
