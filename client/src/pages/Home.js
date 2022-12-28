@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useReducer } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import './Home.css';
+import { useBanPick } from '../hooks/useBanPick';
 
 // import components
 import Ban from '../components/Ban';
@@ -15,18 +16,22 @@ const Home = () => {
   const [searchKey, setSearchKey] = useState("");
   const [blueName, setBlueName] = useState("Blue team");
   const [redName, setRedName] = useState("Red team");
-  const [draftName, setDraftName] = useState("New Draft")
+  const [draftName, setDraftName] = useState("New Draft");
 
-  // ? Can these be refactored into a reducer?
   const [selectedBanPick, setSelectedBanPick] = useState("");
   const [selectedBanPick2, setSelectedBanPick2] = useState("");
   const [selectedChamp, setSelectedChamp] = useState(null);
 
-  // TODO: refactor the following states into a reducer
-  const [bluePicks, setBluePicks] = useState({"B1": null, "B2": null, "B3": null, "B4": null, "B5": null});
-  const [redPicks, setRedPicks] = useState({"R1": null, "R2": null, "R3": null, "R4": null, "R5": null});
-  const [blueBans, setBlueBans] = useState({"b1": null, "b2": null, "b3": null, "b4": null, "b5": null});
-  const [redBans, setRedBans] = useState({"r1": null, "r2": null, "r3": null, "r4": null, "r5": null});
+  // Revert the disabled property of the champion icon
+  const revertDisabled = (targetChamp) => {
+    setChampionObjects(prevChampionObjects => {
+      let index = prevChampionObjects.findIndex(champ => champ[0] === targetChamp[0]);
+      prevChampionObjects[index][2] = !prevChampionObjects[index][2];
+      return prevChampionObjects;
+    });
+  }
+
+  const [{blueBans, redBans, bluePicks, redPicks}, dispatch] = useBanPick(revertDisabled);
 
   const fetchChampions = async () => {
     const data = JSON.parse(localStorage.getItem("championObjects"));
@@ -84,104 +89,26 @@ const Home = () => {
     setSelectedChamp(null);
   }
 
-  // Revert the disabled property of the champion icon
-  const revertDisabled = (targetChamp) => {
-    setChampionObjects(prevChampionObjects => {
-      let index = prevChampionObjects.findIndex(champ => champ[0] === targetChamp[0]);
-      prevChampionObjects[index][2] = !prevChampionObjects[index][2];
-      return prevChampionObjects;
-    });
-  }
-
-  // Check to see if both a ban/pick and a champ are selected
-  // if yes then update the ban/pick
   useEffect(() => {
-    // Update the ban/pick with a selected champ
-    const updateBanPick = (setState) => {
-      setState(prevState => {
-        if (prevState[selectedBanPick] !== null) {
-          revertDisabled(prevState[selectedBanPick]);
-        }
-        prevState[selectedBanPick] = selectedChamp;
-        return {...prevState};
+    // Check if both a ban/pick and champ are selected
+    if (selectedBanPick && selectedChamp) {
+      dispatch({
+        type: "update",
+        payload: [selectedBanPick, selectedChamp]
       });
-    }
-    if (selectedChamp && selectedBanPick) {
-      switch (selectedBanPick[0]) {
-        case "B":
-          updateBanPick(setBluePicks);
-          break;
-        case "R":
-          updateBanPick(setRedPicks);
-          break;
-        case "b":
-          updateBanPick(setBlueBans);
-          break;
-        case "r":
-          updateBanPick(setRedBans);
-          break;
-        default:
-          break;
-      }
       revertDisabled(selectedChamp);
       reset();
     }
-  }, [selectedBanPick, selectedChamp]);
 
-  // Check and swap two pick/ban when two are selected
-  useEffect(() => {
-    // Swap champs between two order of ban/pick
-    const swapChamp = (banPick1, setBanPick1, order1, banPick2, setBanPick2, order2) => {
-      const temp1 = banPick1[order1];
-      const temp2 = banPick2[order2];
-      setBanPick1(prevBanPick1 => {
-        prevBanPick1[order1] = temp2;
-        return {...prevBanPick1};
-      });
-      setBanPick2(prevBanPick2 => {
-        prevBanPick2[order2] = temp1;
-        return {...prevBanPick2};
-      })
-    }
-    // Check for each case of selectedBanPick2
-    const swapCase = (banPick1, setBanPick1) => {
-      switch (selectedBanPick2[0]) {
-        case "B":
-          swapChamp(banPick1, setBanPick1, selectedBanPick, bluePicks, setBluePicks, selectedBanPick2);
-          break;
-        case "R":
-          swapChamp(banPick1, setBanPick1, selectedBanPick, redPicks, setRedPicks, selectedBanPick2);
-          break;
-        case "b":
-          swapChamp(banPick1, setBanPick1, selectedBanPick, blueBans, setBlueBans, selectedBanPick2);
-          break;
-        case "r":
-          swapChamp(banPick1, setBanPick1, selectedBanPick, redBans, setRedBans, selectedBanPick2);
-          break;
-        default:
-          break;
-      }
-    }
+    // Check if two ban/picks are selected
     if (selectedBanPick && selectedBanPick2) {
-      switch (selectedBanPick[0]) {
-        case "B":
-          swapCase(bluePicks, setBluePicks);
-          break;
-        case "R":
-          swapCase(redPicks, setRedPicks);
-          break;
-        case "b":
-          swapCase(blueBans, setBlueBans);
-          break;
-        case "r":
-          swapCase(redBans, setRedBans);
-          break;
-        default:
-          break;
-      }
+      dispatch({
+        type: "swap",
+        payload: [selectedBanPick, selectedBanPick2]
+      });
       reset();
     }
-  }, [selectedBanPick, selectedBanPick2]);
+  }, [selectedBanPick, selectedBanPick2, selectedChamp]);
 
   // Save the draft to the database
   const saveDraft = async () => {
@@ -283,22 +210,22 @@ const Home = () => {
 
       <div className="ban-pick-body">
         <div className="blue-picks">
-          {Object.entries(bluePicks).map(pick => (
-            <BluePick champ={pick[1]} selectedBanPick={selectedBanPick} handleSelection={handleBanPickSelection} order={pick[0]}/>
+          {Object.entries(bluePicks).map((pick, index) => (
+            <BluePick key={index} champ={pick[1]} selectedBanPick={selectedBanPick} handleSelection={handleBanPickSelection} order={pick[0]}/>
           ))}
         </div>
         <div className="champions">
           <SearchBar searchKey={searchKey} setSearchKey={setSearchKey}/>
           <div className="champion-icon-grid">
-            {championObjects.map((champ) => {
+            {championObjects.map((champ, index) => {
               if (searchKey !== "" && champ[1].name.toLowerCase().startsWith(searchKey.toLowerCase())) {
                 return (
-                  <ChampionIcon selectedChamp={selectedChamp} handleSelection={handleChampSelection} champ={champ} />
+                  <ChampionIcon key={index} selectedChamp={selectedChamp} handleSelection={handleChampSelection} champ={champ} />
                 )
               }
               else if (searchKey === "") {
                 return (
-                  <ChampionIcon selectedChamp={selectedChamp} handleSelection={handleChampSelection} champ={champ} />
+                  <ChampionIcon key={champ[1].id} selectedChamp={selectedChamp} handleSelection={handleChampSelection} champ={champ} />
                 )
               }
               else return null;
@@ -306,8 +233,8 @@ const Home = () => {
           </div>
         </div>
         <div className="red-picks">
-            {Object.entries(redPicks).map(pick => (
-              <RedPick champ={pick[1]} selectedBanPick={selectedBanPick} handleSelection={handleBanPickSelection} order={pick[0]}/>
+            {Object.entries(redPicks).map((pick, index) => (
+              <RedPick key={index} champ={pick[1]} selectedBanPick={selectedBanPick} handleSelection={handleBanPickSelection} order={pick[0]}/>
             ))}
         </div>
       </div>
