@@ -32,6 +32,7 @@ const createNewDraft = async (req, res) => {
   }
 }
 
+// Fetch all the drafts available
 const fetchDrafts = async (req, res) => {
   try {
     const drafts = await Draft.find({}).sort({createdAt: -1});
@@ -42,7 +43,27 @@ const fetchDrafts = async (req, res) => {
   }
 }
 
+// Update the specific draft
+const updateDraft = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({error: "No such draft"});
+  }
+
+  const draft = await Draft.findOneAndUpdate({_id: id}, {
+    ...req.body
+  })
+
+  if (!draft) {
+    return res.status(400).json({error: "No such draft"});
+  }
+
+  res.status(200).json(draft);
+}
+
 module.exports = {
   createNewDraft,
-  fetchDrafts
+  fetchDrafts,
+  updateDraft
 }

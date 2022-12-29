@@ -1,7 +1,8 @@
 const express = require('express');
 const {
   createNewDraft,
-  fetchDrafts
+  fetchDrafts,
+  updateDraft
 } = require('../controller/draftController')
 
 const router = express.Router();
@@ -11,5 +12,7 @@ const router = express.Router();
 router.post("/create", createNewDraft); // Save a draft to db
 
 router.get("/fetch", fetchDrafts); // Get drafts in the database
+
+router.patch("/update/:id", updateDraft); // Update an existing draft
 
 module.exports = router;
