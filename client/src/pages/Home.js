@@ -205,6 +205,7 @@ const Home = () => {
     return json;
   }
 
+  // Display the available drafts to load
   const handleLoad = async () => {
     const drafts = await fetchDrafts();
     confirmAlert({
@@ -213,7 +214,7 @@ const Home = () => {
           <div className='custom-ui'>
             <h1>Choose the draft you want to load.</h1>
             {drafts.map((draft, index) => (
-              <SavedDrafts onClose={onClose} handleClickLoad={handleClickLoad} draft={draft}/>
+              <SavedDrafts key={index} onClose={onClose} handleClickLoad={handleClickLoad} draft={draft}/>
             ))}
           </div>
         )
@@ -221,6 +222,7 @@ const Home = () => {
     })
   }
 
+  // Update the names properties of the draft
   const handleBlueNameChange = (e) => {
     e.preventDefault();
     setBlueName(e.target.value);

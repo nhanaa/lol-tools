@@ -59,6 +59,30 @@
 }
 
 /* Draft actions */
+.ban-pick-header .save-load-draft {
+  padding-top: 20px;
+}
+.ban-pick-header .save-load-draft .name {
+  width: 100%;
+  background-color: #007d8e;
+}
+.ban-pick-header .save-load-draft .name-value {
+  font-size: 1.5em;
+  font-family: inherit;
+  background: none;
+  color: #fff;
+  border: none;
+  text-align: center;
+}
+.ban-pick-header .save-load-draft .name-value:focus {
+  outline: none;
+}
+.ban-pick-header .save-load-draft button {
+  width: 50%;
+  background-color: #fff;
+  font-size: 1.2em;
+  margin-top: 10px;
+}
 
 /* Red team */
 .ban-pick-header .red-team {
@@ -68,6 +92,7 @@
   width: 100%;
   margin: 20px 0;
   background-color: red;
+  text-align: right;
 }
 .ban-pick-header .red-team .name-value {
   position: relative;
@@ -192,4 +217,10 @@
 }
 .ban-pick-body .red-picks .selected .pick-order {
   color: #fff;
+}
+
+.react-confirm-alert {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 80vh;
 }
