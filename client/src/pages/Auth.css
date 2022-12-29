@@ -1,0 +1,23 @@
+form.login,
+form.signup {
+  width: 400px;
+  margin: auto auto;
+  padding: 20px;
+  border-radius: 4px;
+  color: #fff;
+}
+h2 {
+  font-size: 2em;
+  text-align: center;
+  width: 100%;
+}
+.username,
+.password {
+  font-size: 1.5em;
+  display: block;
+}
+input {
+  font-size: 1em;
+  width: 100%;
+  padding-top: 10px;
+}
