@@ -9,7 +9,8 @@ export const useBanPick = (revertDisabled) => {
   }
 
   const reducer = (state, action) => {
-    const getGroup = (team) => { // func to get the order of the ban pick
+    // func to get the order of the ban pick
+    const getGroup = (team) => {
       let group = "";
       if (team.toLowerCase() === team) {
         if (team.toLowerCase() === "b") {
@@ -29,6 +30,7 @@ export const useBanPick = (revertDisabled) => {
       }
       return group;
     }
+
     switch (action.type) {
       case "update": {
         // Update ban pick with selected champ
@@ -57,6 +59,16 @@ export const useBanPick = (revertDisabled) => {
         return stateCopy;
       }
       case "load": {
+        // Update the disabled champs in champ grid
+        const outerArr = Object.entries(action.payload)
+        outerArr.forEach(group => {
+          const arr = Object.entries(group[1]);
+          arr.forEach(banPick => {
+            if (banPick[1] !== null) {
+              revertDisabled(banPick[1]);
+            }
+          });
+        });
         return action.payload;
       }
       default:

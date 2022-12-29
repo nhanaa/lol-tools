@@ -18,16 +18,27 @@ const Home = () => {
   const [blueName, setBlueName] = useState("Blue team");
   const [redName, setRedName] = useState("Red team");
   const [draftName, setDraftName] = useState("New Draft");
+  const [draftID, seDraftID] = useState(null);
 
   const [selectedBanPick, setSelectedBanPick] = useState("");
   const [selectedBanPick2, setSelectedBanPick2] = useState("");
   const [selectedChamp, setSelectedChamp] = useState(null);
 
-  // Revert the disabled property of the champion icon
+  // Revert the disabled property of the champion icons
   const revertDisabled = (targetChamp) => {
     setChampionObjects(prevChampionObjects => {
       let index = prevChampionObjects.findIndex(champ => champ[0] === targetChamp[0]);
       prevChampionObjects[index][2] = !prevChampionObjects[index][2];
+      return prevChampionObjects;
+    });
+  }
+
+  // Reset the disabled property of the champion icons
+  const resetDisabled = () => {
+    setChampionObjects(prevChampionObjects => {
+      prevChampionObjects.forEach(champ => {
+        champ[2] = false;
+      })
       return prevChampionObjects;
     });
   }
@@ -113,19 +124,37 @@ const Home = () => {
 
   // Save the draft to the database
   const saveDraft = async () => {
-    const response = await fetch("/draft/create", {
-      method: "POST",
-      headers: {"Content-type": "application/json"},
-      body: JSON.stringify({draftName, blueName, redName, blueBans, redBans, bluePicks, redPicks})
-    })
+    if (draftID) { // This draft is an existing draft
+      const response = await fetch(`/draft/update/${draftID}`, {
+        method: "PATCH",
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({draftName, blueName, redName, blueBans, redBans, bluePicks, redPicks})
+      })
 
-    const json = await response.json();
+      const json = await response.json();
 
-    if (!response.ok) {
-      console.log("Error getting response");
+      if (!response.ok) {
+        console.log("Error getting response");
+      }
+      if (response.ok) {
+        console.log("Draft updated", json);
+      }
     }
-    if (response.ok) {
-      console.log("New draft added", json);
+    else { // This draft is a new draft
+      const response = await fetch("/draft/create", {
+        method: "POST",
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({draftName, blueName, redName, blueBans, redBans, bluePicks, redPicks})
+      })
+
+      const json = await response.json();
+
+      if (!response.ok) {
+        console.log("Error getting response");
+      }
+      if (response.ok) {
+        console.log("New draft added", json);
+      }
     }
   }
 
@@ -147,20 +176,22 @@ const Home = () => {
     });
   }
 
-
+  // Load the selected draft on click
   const handleClickLoad = (draft) => {
     console.log("Loading the draft");
-    // TODO: load the draft data of this component into the draft
     setDraftName(draft["draftName"]);
     setBlueName(draft["blueName"]);
     setRedName(draft["redName"]);
+    seDraftID(draft["_id"]);
     const {blueBans, redBans, bluePicks, redPicks} = draft;
+    resetDisabled();
     dispatch({
       type: "load",
       payload: {blueBans, redBans, bluePicks, redPicks}
     });
   }
 
+  // Fetch all drafts
   const fetchDrafts = async () => {
     const response =  await fetch("/draft/fetch");
 
@@ -169,6 +200,7 @@ const Home = () => {
     if (!response.ok) {
       console.log("Error");
     }
+    console.log(json);
 
     return json;
   }
