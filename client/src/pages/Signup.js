@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { useSignup } from "../hooks/useSignup";
 import './Auth.css'
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // const {login, error, isLoading} = useLogin();
+  const {signup, error, isLoading} = useSignup();
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    await signup(username, password);
   }
   return (
     <form onSubmit={handleSubmit} className="signup">
@@ -30,8 +33,8 @@ const Signup = () => {
           placeholder="Enter password"
         />
       </div>
-      {/* <button disabled={isLoading}>Login</button>
-      {error && <div className="error">{error}</div>} */}
+      <button disabled={isLoading}>Signup</button>
+      {error && <div className="error">{error}</div>}
     </form>
   );
 }

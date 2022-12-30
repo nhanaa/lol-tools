@@ -56,20 +56,33 @@
 
 /* Account section*/
 .navbar .account {
+  width: 30%;
+}
+.navbar .account div {
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: space-evenly;
-  width: 20%;
+  justify-content: center;
 }
 .navbar .account-item {
   font-family: "Lato", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30%;
+  width: 80px;
   text-decoration: none;
   color: #fff;
   font-size: 1.2em;
   border-radius: 4px;
   padding: 0 10px;
   background-color: #199bb5;
+  cursor: pointer;
+  margin: 0 10px;
+}
+.navbar .account-username {
+  font-size: 1.2em;
+  padding-top: 5px;
+}
+.navbar .log-out {
+  border: none;
 }

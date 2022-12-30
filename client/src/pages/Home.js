@@ -3,6 +3,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import './Home.css';
 import { useBanPick } from '../hooks/useBanPick';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 // import components
 import Ban from '../components/Ban';
@@ -13,6 +14,8 @@ import SearchBar from '../components/SearchBar';
 import SavedDrafts from '../components/SavedDrafts';
 
 const Home = () => {
+  const { user } = useAuthContext();
+
   const [championObjects, setChampionObjects] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const [blueName, setBlueName] = useState("Blue team");
@@ -125,9 +128,12 @@ const Home = () => {
   // Save the draft to the database
   const saveDraft = async () => {
     if (draftID) { // This draft is an existing draft
-      const response = await fetch(`/draft/update/${draftID}`, {
+      const response = await fetch(`api/draft/update/${draftID}`, {
         method: "PATCH",
-        headers: {"Content-type": "application/json"},
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": `Bearer ${user.token}`
+        },
         body: JSON.stringify({draftName, blueName, redName, blueBans, redBans, bluePicks, redPicks})
       })
 
@@ -141,9 +147,13 @@ const Home = () => {
       }
     }
     else { // This draft is a new draft
-      const response = await fetch("/draft/create", {
+      console.log(user.token);
+      const response = await fetch("api/draft/create", {
         method: "POST",
-        headers: {"Content-type": "application/json"},
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": `Bearer ${user.token}`
+        },
         body: JSON.stringify({draftName, blueName, redName, blueBans, redBans, bluePicks, redPicks})
       })
 
@@ -151,6 +161,7 @@ const Home = () => {
 
       if (!response.ok) {
         console.log("Error getting response");
+        console.log(json);
       }
       if (response.ok) {
         console.log("New draft added", json);
@@ -193,7 +204,11 @@ const Home = () => {
 
   // Fetch all drafts
   const fetchDrafts = async () => {
-    const response =  await fetch("/draft/fetch");
+    const response =  await fetch("api/draft/fetch", {
+      headers: {
+        "Authorization": `Bearer ${user.token}`
+      }
+    });
 
     const json = await response.json();
 

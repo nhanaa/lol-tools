@@ -15,6 +15,8 @@ const createNewDraft = async (req, res) => {
 
   // Add new draft to db
   try {
+    const user_id = req.user._id;
+    console.log(user_id);
     const draft = await Draft.create(
     {
       draftName,
@@ -23,7 +25,8 @@ const createNewDraft = async (req, res) => {
       blueBans: {b1, b2, b3, b4, b5},
       redBans: {r1,r2, r3, r4, r5},
       bluePicks: {B1, B2, B3, B4, B5},
-      redPicks: {R1, R2, R3, R4, R5}
+      redPicks: {R1, R2, R3, R4, R5},
+      user_id
     });
     res.status(200).json(draft);
   }
@@ -32,10 +35,12 @@ const createNewDraft = async (req, res) => {
   }
 }
 
-// Fetch all the drafts available
+// Fetch all the drafts available by user
 const fetchDrafts = async (req, res) => {
+  const user_id = req.user._id;
+
   try {
-    const drafts = await Draft.find({}).sort({createdAt: -1});
+    const drafts = await Draft.find({user_id}).sort({createdAt: -1});
     res.status(200).json(drafts);
   }
   catch (err) {
