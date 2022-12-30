@@ -1,8 +1,13 @@
 import './SavedDrafts.css'
 
-const SavedDrafts = ({handleClickLoad, onClose, draft}) => {
-  const handleClick = () => {
+const SavedDrafts = ({handleClickLoad, handleClickDelete, onClose, draft}) => {
+  const handleClickLoadButton = () => {
     handleClickLoad(draft);
+    onClose();
+  }
+
+  const handleClickDeleteButton = async () => {
+    handleClickDelete(draft);
     onClose();
   }
 
@@ -22,7 +27,7 @@ const SavedDrafts = ({handleClickLoad, onClose, draft}) => {
   }
 
   return (
-    <div className="draft" onClick={handleClick}>
+    <div className="draft" >
       <span className="draft-name"><strong>Name</strong>: {draft["draftName"]}</span>
       <span className="draft-teams"><strong>Team</strong>: {draft["blueName"]} vs {draft["redName"]}</span>
       <span className="draft-bans"><strong>Blue Bans</strong>: {getChampNames("blueBans")}</span>
@@ -30,6 +35,10 @@ const SavedDrafts = ({handleClickLoad, onClose, draft}) => {
       <span className="draft-bans"><strong>Blue Picks</strong>: {getChampNames("bluePicks")}</span>
       <span className="draft-bans"><strong>Red Picks</strong>: {getChampNames("redPicks")}</span>
       <span className="draft-time"><strong>Created at</strong>: {draft["createdAt"]}</span>
+      <div className="draft-buttons">
+        <button onClick={handleClickLoadButton} className="load">Load</button>
+        <button onClick={handleClickDeleteButton} className="delete">Delete</button>
+      </div>
     </div>
   );
 }

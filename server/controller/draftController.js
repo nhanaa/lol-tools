@@ -48,7 +48,7 @@ const fetchDrafts = async (req, res) => {
   }
 }
 
-// Update the specific draft
+// Update a specific draft
 const updateDraft = async (req, res) => {
   const { id } = req.params;
 
@@ -67,8 +67,26 @@ const updateDraft = async (req, res) => {
   res.status(200).json(draft);
 }
 
+// Delete a specific draft
+const deleteDraft = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({error: "No such draft"});
+  }
+
+  const draft = await Draft.findByIdAndDelete({_id: id});
+
+  if (!draft) {
+    return res.status(400).json({error: "No such draft"});
+  }
+
+  res.status(200).json(draft);
+}
+
 module.exports = {
   createNewDraft,
   fetchDrafts,
-  updateDraft
+  updateDraft,
+  deleteDraft
 }

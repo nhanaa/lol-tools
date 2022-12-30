@@ -2,7 +2,8 @@ const express = require('express');
 const {
   createNewDraft,
   fetchDrafts,
-  updateDraft
+  updateDraft,
+  deleteDraft
 } = require('../controller/draftController')
 const requireAuth = require("../middleware/requireAuth");
 
@@ -19,5 +20,7 @@ router.post("/create", createNewDraft); // Save a draft to db
 router.get("/fetch", fetchDrafts); // Get drafts in the database for a user
 
 router.patch("/update/:id", updateDraft); // Update an existing draft
+
+router.delete("/delete/:id", deleteDraft); // Delete an existing draft
 
 module.exports = router;

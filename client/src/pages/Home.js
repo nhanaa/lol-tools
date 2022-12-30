@@ -22,7 +22,7 @@ const Home = () => {
   const [blueName, setBlueName] = useState("Blue team");
   const [redName, setRedName] = useState("Red team");
   const [draftName, setDraftName] = useState("New Draft");
-  const [draftID, seDraftID] = useState(null);
+  const [draftID, setDraftID] = useState(null);
 
   const [selectedBanPick, setSelectedBanPick] = useState("");
   const [selectedBanPick2, setSelectedBanPick2] = useState("");
@@ -206,7 +206,7 @@ const Home = () => {
     setDraftName(draft["draftName"]);
     setBlueName(draft["blueName"]);
     setRedName(draft["redName"]);
-    seDraftID(draft["_id"]);
+    setDraftID(draft["_id"]);
     const {blueBans, redBans, bluePicks, redPicks} = draft;
     resetDisabled();
     dispatch({
@@ -214,6 +214,27 @@ const Home = () => {
       payload: {blueBans, redBans, bluePicks, redPicks}
     });
   },[dispatch]);
+
+  // Delete the selected draft on click
+  const handleClickDelete = useCallback(async (draft) => {
+    console.log(draft);
+
+    const response = await fetch(`/api/draft/delete/${draft._id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${user.token}`
+      }
+    });
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      console.log("Error");
+    }
+
+    return json;
+
+  }, [user]);
 
   // Fetch all drafts
   const fetchDrafts = async () => {
@@ -236,7 +257,7 @@ const Home = () => {
   const handleLoad = async () => {
     if (user) {
       const drafts = await fetchDrafts();
-      loadDrafts(drafts, handleClickLoad);
+      loadDrafts(drafts, handleClickLoad, handleClickDelete);
     }
     else {
       confirmAlert({

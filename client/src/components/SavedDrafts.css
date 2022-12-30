@@ -5,11 +5,10 @@
   border-radius: 5px;
   width: 92vw;
   margin: 10px 0;
-  cursor: pointer;
-}
-.draft:hover {
-  transform: translate(5px, -5px);
 }
 .draft span {
   width: 46vw;
+}
+.load {
+  margin-right: 20px;
 }
