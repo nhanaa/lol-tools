@@ -50,8 +50,8 @@ export const useBanPick = (revertDisabled) => {
         const [banPick1, banPick2] = action.payload;
         const team1 = banPick1[0];
         const team2 = banPick2[0];
-        const group1 = getGroup(team1, stateCopy);
-        const group2 = getGroup(team2, stateCopy);
+        const group1 = getGroup(team1);
+        const group2 = getGroup(team2);
         // swap
         const temp = stateCopy[group1][banPick1];
         stateCopy[group1][banPick1] = stateCopy[group2][banPick2];

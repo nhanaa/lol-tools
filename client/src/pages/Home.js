@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import './Home.css';
 import { useBanPick } from '../hooks/useBanPick';
 import { useAuthContext } from '../hooks/useAuthContext';
+import loadDrafts from '../functions/loadDrafts';
+
 
 // import components
 import Ban from '../components/Ban';
@@ -11,7 +13,6 @@ import BluePick from '../components/BluePick';
 import ChampionIcon from '../components/ChampionIcon';
 import RedPick from '../components/RedPick';
 import SearchBar from '../components/SearchBar';
-import SavedDrafts from '../components/SavedDrafts';
 
 const Home = () => {
   const { user } = useAuthContext();
@@ -84,18 +85,19 @@ const Home = () => {
   }, []);
 
   // Handle ban pick selection
-  const handleBanPickSelection = (order) => {
+
+  const handleBanPickSelection = useCallback((order) => {
     if (selectedBanPick !== "") {
       setSelectedBanPick2(order);
       return;
     }
     setSelectedBanPick(order);
-  }
+  }, [selectedBanPick]);
 
   // Handle champ selection
-  const handleChampSelection = (champ) => {
+  const handleChampSelection = useCallback((champ) => {
     setSelectedChamp(champ);
-  }
+  }, [])
 
   // Reset the selected champ and selected ban pick states
   const reset = () => {
@@ -123,7 +125,7 @@ const Home = () => {
       });
       reset();
     }
-  }, [selectedBanPick, selectedBanPick2, selectedChamp]);
+  }, [selectedBanPick, selectedBanPick2, selectedChamp, dispatch]);
 
   // Save the draft to the database
   const saveDraft = async () => {
@@ -171,24 +173,35 @@ const Home = () => {
 
   // Handle action when clicking on save button
   const handleSave = () => {
-    confirmAlert({
-      title: "Confirm to save draft",
-      message: "Are you sure to save this draft?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => saveDraft()
-        },
-        {
-          label: "No",
-          onClick: () => null
-        }
-      ]
-    });
+    if (user) {
+      confirmAlert({
+        title: "Confirm to save draft",
+        message: "Are you sure to save this draft?",
+        buttons: [
+          {
+            label: "Yes",
+            onClick: () => saveDraft()
+          },
+          {
+            label: "No",
+            onClick: () => null
+          }
+        ]
+      });
+    }
+    else {
+      confirmAlert({
+        title: "Please login first",
+        buttons: [{
+          label: "Ok",
+          onClick: () =>  null
+        }]
+      })
+    }
   }
 
   // Load the selected draft on click
-  const handleClickLoad = (draft) => {
+  const handleClickLoad = useCallback((draft) => {
     console.log("Loading the draft");
     setDraftName(draft["draftName"]);
     setBlueName(draft["blueName"]);
@@ -200,7 +213,7 @@ const Home = () => {
       type: "load",
       payload: {blueBans, redBans, bluePicks, redPicks}
     });
-  }
+  },[dispatch]);
 
   // Fetch all drafts
   const fetchDrafts = async () => {
@@ -215,26 +228,25 @@ const Home = () => {
     if (!response.ok) {
       console.log("Error");
     }
-    console.log(json);
 
     return json;
   }
 
   // Display the available drafts to load
   const handleLoad = async () => {
-    const drafts = await fetchDrafts();
-    confirmAlert({
-      customUI: ({ onClose }) => {
-        return (
-          <div className='custom-ui'>
-            <h1>Choose the draft you want to load.</h1>
-            {drafts.map((draft, index) => (
-              <SavedDrafts key={index} onClose={onClose} handleClickLoad={handleClickLoad} draft={draft}/>
-            ))}
-          </div>
-        )
-      }
-    })
+    if (user) {
+      const drafts = await fetchDrafts();
+      loadDrafts(drafts, handleClickLoad);
+    }
+    else {
+      confirmAlert({
+        title: "Please login first",
+        buttons: [{
+          label: "Ok",
+          onClick: () =>  null
+        }]
+      })
+    }
   }
 
   // Update the names properties of the draft
@@ -305,19 +317,13 @@ const Home = () => {
         <div className="champions">
           <SearchBar searchKey={searchKey} setSearchKey={setSearchKey}/>
           <div className="champion-icon-grid">
-            {championObjects.map((champ, index) => {
-              if (searchKey !== "" && champ[1].name.toLowerCase().startsWith(searchKey.toLowerCase())) {
+            {championObjects
+              .filter(champ => (searchKey === "" || champ[1].name.toLowerCase().startsWith(searchKey.toLowerCase())))
+              .map((champ, index) => {
                 return (
                   <ChampionIcon key={index} selectedChamp={selectedChamp} handleSelection={handleChampSelection} champ={champ} />
                 )
-              }
-              else if (searchKey === "") {
-                return (
-                  <ChampionIcon key={champ[1].id} selectedChamp={selectedChamp} handleSelection={handleChampSelection} champ={champ} />
-                )
-              }
-              else return null;
-            })}
+              })}
           </div>
         </div>
         <div className="red-picks">
