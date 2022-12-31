@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import './Home.css';
+import './Draft.css';
 import { useBanPick } from '../hooks/useBanPick';
 import { useAuthContext } from '../hooks/useAuthContext';
 import loadDrafts from '../functions/loadDrafts';
@@ -14,7 +14,7 @@ import ChampionIcon from '../components/ChampionIcon';
 import RedPick from '../components/RedPick';
 import SearchBar from '../components/SearchBar';
 
-const Home = () => {
+const Draft = () => {
   const { user } = useAuthContext();
 
   const [championObjects, setChampionObjects] = useState([]);
@@ -53,7 +53,7 @@ const Home = () => {
     const data = JSON.parse(localStorage.getItem("championObjects"));
 
     if (!data) { // Check if there is cached data
-      const response  = await fetch("/api/champions");
+      const response  = await fetch(process.env.API_URL + "/api/champions");
 
       const json = await response.json();
 
@@ -130,7 +130,7 @@ const Home = () => {
   // Save the draft to the database
   const saveDraft = async () => {
     if (draftID) { // This draft is an existing draft
-      const response = await fetch(`api/draft/update/${draftID}`, {
+      const response = await fetch(process.env.API_URL + `api/draft/update/${draftID}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json",
@@ -150,7 +150,7 @@ const Home = () => {
     }
     else { // This draft is a new draft
       console.log(user.token);
-      const response = await fetch("api/draft/create", {
+      const response = await fetch(process.env.API_URL + "api/draft/create", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -219,7 +219,7 @@ const Home = () => {
   const handleClickDelete = useCallback(async (draft) => {
     console.log(draft);
 
-    const response = await fetch(`/api/draft/delete/${draft._id}`, {
+    const response = await fetch(process.env.API_URL + `/api/draft/delete/${draft._id}`, {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${user.token}`
@@ -238,7 +238,7 @@ const Home = () => {
 
   // Fetch all drafts
   const fetchDrafts = async () => {
-    const response =  await fetch("api/draft/fetch", {
+    const response =  await fetch(process.env.API_URL + "api/draft/fetch", {
       headers: {
         "Authorization": `Bearer ${user.token}`
       }
@@ -357,4 +357,4 @@ const Home = () => {
   );
 }
 
-export default Home;
+export default Draft;
