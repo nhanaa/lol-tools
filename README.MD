@@ -1,5 +1,7 @@
 # Lol Tools
 
+![screenshot](https://i.imgur.com/sMl5vpj.png)
+
 ## About The Project
 
 As a avid follower of the professional League of Legends scene, I have always
@@ -13,11 +15,44 @@ This project was created with:
 - Express.js v4.18.2
 - MongoDB Atlas
 
-It is hosted at
+It is hosted at:
+[https://lol-tools-app.onrender.com](https://lol-tools-app.onrender.com)
 
 ## Installation
 
-To run this project locally, install it using npm.
+To run this project locally, follow the following steps:
+
+1. Clone the repository:
+
+```
+git clone https://github.com/nhanaa/lol-tools.git
+```
+
+2. Build the project
+
+```
+npm run build
+```
+
+3. To start the server, use a new terminal
+
+```
+cd server
+npm run start
+```
+
+4. To run the client, use a new terminal
+
+```
+cd client
+npm run start
+```
+
+If you want to watch your changes in the server, use this command when in the server directory
+
+```
+npm run dev
+```
 
 ## Planned features
 
