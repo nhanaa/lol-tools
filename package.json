@@ -1,0 +1,21 @@
+{
+  "name": "lol-tools",
+  "version": "1.0.0",
+  "description": "As a avid follower of the professional League of Legends scene, I have always\r been very interested in the ban/pick phase (or the draft phase) of the game.\r There are many tools out there that can assist you with it, but I want to make\r my own tools that I can tweak to my own interests. Thus, this project was born.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd server && npm install && cd ../client && npm install && npm run build",
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhanaa/lol-tools.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nhanaa/lol-tools/issues"
+  },
+  "homepage": "https://github.com/nhanaa/lol-tools#readme"
+}
