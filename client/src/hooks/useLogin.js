@@ -10,7 +10,7 @@ export const useLogin = () => {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch(process.env.API_URL + "/api/users/login", {
+    const response = await fetch("https://lol-tools-server.onrender.com/api/users/login", {
       method: "POST",
       headers: {"Content-type": "application/json"},
       body: JSON.stringify({username, password})
