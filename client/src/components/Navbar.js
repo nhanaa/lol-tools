@@ -19,8 +19,7 @@ const Navbar = () => {
         <span className="title-name">Lol Tools</span>
       </Link>
       <div className="panel">
-        <Link className="panel-item" to="/">Home</Link>
-        <Link className="panel-item" to="/options">Options</Link>
+        <Link className="panel-item" to="/">Draft</Link>
         <Link className="panel-item" to="/about">About</Link>
       </div>
       <div className="account">
