@@ -53,7 +53,7 @@ const Draft = () => {
     const data = JSON.parse(localStorage.getItem("championObjects"));
 
     if (!data) { // Check if there is cached data
-      const response  = await fetch("https://lol-tools-server.onrender.com/api/champions");
+      const response  = await fetch("/api/champions");
 
       const json = await response.json();
 
@@ -130,7 +130,7 @@ const Draft = () => {
   // Save the draft to the database
   const saveDraft = async () => {
     if (draftID) { // This draft is an existing draft
-      const response = await fetch(`https://lol-tools-server.onrender.com/api/draft/update/${draftID}`, {
+      const response = await fetch(`/api/draft/update/${draftID}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json",
@@ -150,7 +150,7 @@ const Draft = () => {
     }
     else { // This draft is a new draft
       console.log(user.token);
-      const response = await fetch("https://lol-tools-server.onrender.com/api/draft/create", {
+      const response = await fetch("/api/draft/create", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -219,7 +219,7 @@ const Draft = () => {
   const handleClickDelete = useCallback(async (draft) => {
     console.log(draft);
 
-    const response = await fetch(`https://lol-tools-server.onrender.com/api/draft/delete/${draft._id}`, {
+    const response = await fetch(`/api/draft/delete/${draft._id}`, {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${user.token}`
@@ -238,7 +238,7 @@ const Draft = () => {
 
   // Fetch all drafts
   const fetchDrafts = async () => {
-    const response =  await fetch("https://lol-tools-server.onrender.com/api/draft/fetch", {
+    const response =  await fetch("/api/draft/fetch", {
       headers: {
         "Authorization": `Bearer ${user.token}`
       }
