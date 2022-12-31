@@ -5,6 +5,7 @@ import {HashRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { useAuthContext } from './hooks/useAuthContext';
+import About from './pages/About';
 
 function App() {
   const { user } = useAuthContext();
@@ -15,6 +16,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route exact path="/" element={<Draft />}/>
+          <Route path="/about" element={<About />}/>
           <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />}/>
           <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" />}/>
         </Routes>
