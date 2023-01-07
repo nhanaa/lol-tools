@@ -4,7 +4,7 @@ const About = () => {
   return (
     <div className="about">
       <div className="content">
-        <p>Inspired by https://pick-ban-gg.web.app/</p>
+        <p>Inspired by <a href="https://pick-ban-gg.web.app/">https://pick-ban-gg.web.app/</a></p>
         <p>Planned features:</p>
         <ul>
           <li>Create, save, and load builds</li>
