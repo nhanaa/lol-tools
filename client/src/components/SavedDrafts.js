@@ -1,4 +1,5 @@
 import './SavedDrafts.css'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
 const SavedDrafts = ({handleClickLoad, handleClickDelete, onClose, draft}) => {
   const handleClickLoadButton = () => {
@@ -34,7 +35,7 @@ const SavedDrafts = ({handleClickLoad, handleClickDelete, onClose, draft}) => {
       <span className="draft-bans"><strong>Red Bans</strong>: {getChampNames("redBans")}</span>
       <span className="draft-bans"><strong>Blue Picks</strong>: {getChampNames("bluePicks")}</span>
       <span className="draft-bans"><strong>Red Picks</strong>: {getChampNames("redPicks")}</span>
-      <span className="draft-time"><strong>Created at</strong>: {draft["createdAt"]}</span>
+      <span className="draft-time"><strong>Created at</strong>: {formatDistanceToNow(new Date(draft["createdAt"]))} ago</span>
       <div className="draft-buttons">
         <button onClick={handleClickLoadButton} className="load">Load</button>
         <button onClick={handleClickDeleteButton} className="delete">Delete</button>
